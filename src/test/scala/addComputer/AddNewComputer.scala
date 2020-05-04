@@ -30,6 +30,8 @@ class AddNewComputer extends Simulation {
 
 
   val scn = scenario("AddNewComputer")
+    .exec(flushCookieJar)
+    .exec(flushHttpCache)
     .exec(http("GoToHomePage")
       .get("/computers")
       .headers(headers_0)
