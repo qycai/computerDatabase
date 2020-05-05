@@ -73,10 +73,16 @@ class AddNewComputer extends Simulation {
       .resources(http("request_10")
         .get("/assets/stylesheets/bootstrap.min.css"),
         http("request_11")
-          .get("/assets/stylesheets/main.css")))
+          .get("/assets/stylesheets/main.css"))
+      .check(css(".computers tbody tr td a", "href").saveAs("computerIdLink")))
     .pause(2)
+    .exec {
+      session =>
+        println("------------computerIdLink-----------" + session("computerIdLink").as[String])
+        session
+    }
     .exec(http("GetComputerDetailById")
-      .get("/computers/4171")
+      .get("${computerIdLink}")
       .headers(headers_0)
       .resources(http("request_13")
         .get("/assets/stylesheets/bootstrap.min.css"),
