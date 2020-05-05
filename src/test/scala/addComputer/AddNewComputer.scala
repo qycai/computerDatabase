@@ -28,6 +28,9 @@ class AddNewComputer extends Simulation {
     "Origin" -> "http://computer-database.gatling.io",
     "Upgrade-Insecure-Requests" -> "1")
 
+  //加载csv文件
+  val computerInfo = csv("data/computerInfo.csv").queue
+
 
   val scn = scenario("AddNewComputer")
     .exec(flushCookieJar)
@@ -54,13 +57,15 @@ class AddNewComputer extends Simulation {
       .check(substring("Discontinued date").exists)
       .check(substring("Company").exists))
     .pause(10)
+    //使用csv文件中的数据
+    .feed(computerInfo)
     .exec(http("AddComputer")
       .post("/computers")
       .headers(headers_6)
-      .formParam("name", "GatlingLearning")
-      .formParam("introduced", "2019-05-06")
-      .formParam("discontinued", "2020-04-30")
-      .formParam("company", "4")
+      .formParam("name", "${name}")
+      .formParam("introduced", "${introduced}")
+      .formParam("discontinued", "${discontinued}")
+      .formParam("company", "${companyId}")
       .resources(http("request_7")
         .get("/assets/stylesheets/bootstrap.min.css"),
         http("request_8")
@@ -68,7 +73,7 @@ class AddNewComputer extends Simulation {
       .check(bodyString.saveAs("AddComputerBody")))
     .pause(5)
     .exec(http("SearchComputerByName")
-      .get("/computers?f=GatlingLearning")
+      .get("/computers?f=${name}")
       .headers(headers_0)
       .resources(http("request_10")
         .get("/assets/stylesheets/bootstrap.min.css"),
@@ -93,5 +98,5 @@ class AddNewComputer extends Simulation {
       .get("/computers")
       .headers(headers_0))
 
-  setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+  setUp(scn.inject(atOnceUsers(2))).protocols(httpProtocol)
 }

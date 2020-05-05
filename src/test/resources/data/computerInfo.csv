@@ -1,0 +1,11 @@
+name,introduced,discontinued,company,companyId
+test1,2009-04-01,2020-04-01,Netronics,4
+test2,2009-04-02,2020-04-02,IBM,13
+test3,2009-04-03,2020-04-03,Canon,15
+test4,2009-04-04,2020-04-04,Sony,17
+test5,2009-04-05,2020-04-05,Atari,20
+test6,2009-04-06,2020-04-06,Sanyo,30
+test7,2009-04-07,2020-04-07,Amstrad,38
+test8,2009-04-08,2020-04-08,Sony,17
+test9,2009-04-09,2020-04-09,IBM,13
+test10,2009-04-10,2020-04-10,IBM,13
