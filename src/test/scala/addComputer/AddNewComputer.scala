@@ -29,7 +29,7 @@ class AddNewComputer extends Simulation {
     "Upgrade-Insecure-Requests" -> "1")
 
   //加载csv文件
-  val computerInfo = csv("data/computerInfo.csv").queue
+  val computerInfo = csv("data/computerInfo.csv").circular
 
 
   val scn = scenario("AddNewComputer")
@@ -98,5 +98,7 @@ class AddNewComputer extends Simulation {
       .get("/computers")
       .headers(headers_0))
 
-  setUp(scn.inject(atOnceUsers(2))).protocols(httpProtocol)
+  setUp(scn.inject(constantConcurrentUsers(10) during (20))).protocols(httpProtocol)
+    .assertions(global.responseTime.max.lt(120))
+    .assertions(forAll.failedRequests.percent.lte(5))
 }
